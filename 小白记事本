@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			@font-face {
+				font-family:smartfont;
+				src: url(fonts/Smartisan_Compact-Light.ttf);
+			}
+			*{
+				padding: 0;
+				margin: 0;
+				font-family: smartfont;
+			}
+			#header{
+				color: #fff;
+				font-size: 64px;
+				text-shadow: 2px 2px 5px #666;
+				padding: 50px 0;
+			}
+			
+			#todoapp{
+				margin: 0 auto;
+				width: 500px;
+			}
+			.new-todo{
+				width: 500px;
+				height: 70px;
+				box-sizing: border-box;
+				padding-left: 20px;
+				font-size: 36px;
+				border: 0;
+				background-color: #ddd;
+			}
+			.main{
+				box-shadow:0 5px 0px 0px #fff, 0 5px 10px #999;
+			}
+			.todo-list{
+				list-style: none;
+				font-size: 36px;
+				padding: 20px;
+			}
+			.destroy{
+				/* display: none; */
+				border: none;
+				background-color: white;
+				float: right;
+				font-size: 24px;
+				line-height: 46px;
+			}
+			.todo:hover .destroy{
+				display: block;
+			}
+			
+			.footer{
+				padding: 10px 20px;
+				display: flex;
+				justify-content: space-between;
+			}
+			.delall{
+				color: #666;
+				background-color: white;
+				display: flex;
+				border: 0;
+			}
+			.delall:hover{
+				background-color: #eee;
+				border-radius: 3px;
+			}
+			
+			/* 底部 */
+			.info{
+				width: 485px;
+				box-sizing: border-box;
+				margin: 3px auto;
+				padding-top: 5px;
+				box-shadow:0 5px 0px 0px #fff, 0 5px 5px #999;
+			}
+			.info p{
+				padding: 10px 0 10px 20px;
+			}
+			.end-list{
+				padding-left: 20px;
+				list-style: none;
+				font-size: 36px;
+				color: #aaa;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<!-- 主体 -->
+		<section id="todoapp">
+			
+			<!-- 顶部 -->
+			<header id="header">
+				<h1>小白记事本</h1>
+			</header>
+			
+			<section class="main">
+				<input v-model="inputValue" @keyup.enter="add()" class="new-todo" autofocus="autofocus" autocomplete="off" placeholder="请输入任务">
+				<!-- 列表区域 -->
+				<ul class="todo-list">
+					<li class="todo" v-for="(item,index) in list">
+						<div>
+							<span class="index">{{index+1}}.</span>
+							<lable>{{item}}</lable>
+							<button class="destroy" @click="del(index)">√</button>
+						</div>
+					</li>
+				</ul>
+				
+				<!-- 统计和清空 -->
+				<footer class="footer">
+					<span v-show="list.length!=0">{{list.length}} 个任务</span>
+					<!-- <a href="javascript:void(0)">list</a> -->
+					<button v-show="list.length!=0" class="delall" @click="delall">清空</button>
+				</footer>
+				
+			</section>
+			
+			
+			<!-- 底部 -->
+			<footer class="info">
+				<p v-show="list_end.length!=0">已完成:</p>
+				<ul class="end-list">
+					<li class="end" v-for="(item,index) in list_end">
+						<div>
+							<span class="index">{{index+1}}.</span>
+							<lable>{{item}}</lable>
+						</div>
+					</li>
+				</ul>
+				<footer class="footer" v-show="list_end.length!=0">
+					<span>完成个数:{{list_end.length}}</span>
+					<button class="delall" @click="del_endall">清空</button>
+				</footer>
+				
+			</footer>
+			
+			
+		</section>
+		
+		
+		
+		
+		
+		
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script type="text/javascript">
+			var app = new Vue({
+				el:"#todoapp",
+				data:{
+					list:["吃饭","睡觉","搞学习"],
+					inputValue:"",
+					list_end:[]
+					
+				},
+				methods:{
+					add:function(){
+						this.list.push(this.inputValue);
+					},
+					del:function(index){
+						this.list_end.push(this.list[index]);
+						this.list.splice(index,1);
+					},
+					delall:function(){
+						this.list = [];
+					},
+					del_endall:function(){
+						this.list_end = [];
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
